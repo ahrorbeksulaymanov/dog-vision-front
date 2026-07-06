@@ -1,8 +1,7 @@
 import { formatBreedName, isDogDetected } from "@/lib/breed";
+import { getApiUrl } from "@/lib/config";
 import type { AnalyzeResponse } from "@/lib/types";
 import { NextRequest, NextResponse } from "next/server";
-
-const DEFAULT_API_URL = "http://127.0.0.1:8000";
 
 type PredictResponse = {
   breed?: string;
@@ -41,7 +40,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const apiUrl = process.env.DOG_VISION_API_URL ?? DEFAULT_API_URL;
+    const apiUrl = getApiUrl();
 
     const backendFormData = new FormData();
     const filename =
@@ -87,8 +86,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error:
-          "Serverga ulanib bo'lmadi. Backend ishlayotganini tekshiring (http://127.0.0.1:8000).",
+        error: "Serverga ulanib bo'lmadi. Keyinroq qayta urinib ko'ring.",
       } satisfies AnalyzeResponse,
       { status: 500 },
     );
